@@ -176,7 +176,7 @@ class JobControllerTest extends \PHPUnit\Framework\TestCase
     $userId = 2;
     $user = $this->getUsers([$userId]);
     $this->restHelper->shouldReceive('getUserId')->andReturn($userId);
-    $this->dbHelper->shouldReceive('getUserJobs')->withArgs(array(null, 2, 0, 1))
+    $this->dbHelper->shouldReceive('getUserJobs')->withArgs(array(2, NULL, 'ASC', 0, 1))
       ->andReturn([[$job], 1]);
     $actualResponse = $this->jobController->getJobs($request, $response, []);
     $expectedResponse = $job->getArray(ApiVersion::V1);
@@ -217,7 +217,7 @@ class JobControllerTest extends \PHPUnit\Framework\TestCase
     $userId = 2;
     $user = $this->getUsers([$userId]);
     $this->restHelper->shouldReceive('getUserId')->andReturn($userId);
-    $this->dbHelper->shouldReceive('getUserJobs')->withArgs(array(null, 2, 1, 2))
+    $this->dbHelper->shouldReceive('getUserJobs')->withArgs(array(2, null, "ASC", 1, 2))
     ->andReturn([[$jobTwo], 2]);
     $actualResponse = $this->jobController->getJobs($request, $response, []);
     $expectedResponse = $jobTwo->getArray(ApiVersion::V1);
@@ -265,7 +265,7 @@ class JobControllerTest extends \PHPUnit\Framework\TestCase
     ['text' => 'ReadMeOss', 'link' => 'http://localhost/repo/api/v1/report/16']);
     $this->dbHelper->shouldReceive('doesIdExist')
       ->withArgs(["job", "job_pk", 12])->andReturn(true);
-    $this->dbHelper->shouldReceive('getJobs')->withArgs(array(12, 0, 1))
+    $this->dbHelper->shouldReceive('getJobs')->withArgs(array(12, NULL, 'ASC', 0, 1, NULL))
       ->andReturn([[$job], 1]);
     $this->jobDao->shouldReceive('getChlidJobStatus')->withArgs(array(12))
       ->andReturn(['45' => 0]);
@@ -307,7 +307,7 @@ class JobControllerTest extends \PHPUnit\Framework\TestCase
       ->withArgs(["upload", "upload_pk", 5])->andReturn(true);
     $this->dbHelper->shouldReceive('doesIdExist')
       ->withArgs(['job', 'job_pk', 12])->andReturn(true);
-    $this->dbHelper->shouldReceive('getJobs')->withArgs(array(null, 0, 1, 5))
+    $this->dbHelper->shouldReceive('getJobs')->withArgs(array(null, null, "ASC", 0, 1, 5, null))
       ->andReturn([[$job], 1]);
     $this->jobDao->shouldReceive('getChlidJobStatus')->withArgs(array(12))
       ->andReturn(['45' => 0]);
