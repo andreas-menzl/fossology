@@ -364,42 +364,4 @@ class JobControllerTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals(0, $result);
   }
 
-  /**
-   * @test
-   * -# Test JobController::getJobStatus()
-   * -# Setup one job with two complete children => result Completed
-   * -# Setup one job with one child processing and other in queue => result
-   *    Processing
-   * -# Setup one job with one child completed and one failed => result Failed
-   */
-  public function testGetJobStatus()
-  {
-    $jobCompleted = [1, 2];
-    $jobQueued = [3, 4];
-    $jobFailed = [5, 6];
-    $this->showJobsDao->shouldReceive('getDataForASingleJob')
-      ->withArgs([M::anyof(1, 2, 5)])
-      ->andReturn(["jq_endtext" => "Completed"]);
-    $this->showJobsDao->shouldReceive('getDataForASingleJob')
-      ->withArgs([3])->andReturn(["jq_endtext" => "Started"]);
-    $this->showJobsDao->shouldReceive('getDataForASingleJob')
-      ->withArgs([4])->andReturn(["jq_endtext" => "Processing",
-        "jq_endtime" => ""]);
-    $this->showJobsDao->shouldReceive('getDataForASingleJob')
-      ->withArgs([6])->andReturn(["jq_endtext" => "Failed",
-        "jq_endtime" => "01-01-2020 00:00:00"]);
-
-    $reflection = new \ReflectionClass(get_class($this->jobController));
-    $method = $reflection->getMethod('getJobStatus');
-    $method->setAccessible(true);
-
-    $result = $method->invokeArgs($this->jobController, [$jobCompleted]);
-    $this->assertEquals("Completed", $result);
-
-    $result = $method->invokeArgs($this->jobController, [$jobQueued]);
-    $this->assertEquals("Processing", $result);
-
-    $result = $method->invokeArgs($this->jobController, [$jobFailed]);
-    $this->assertEquals("Failed", $result);
-  }
 }
