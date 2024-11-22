@@ -75,8 +75,8 @@ class JobController extends RestController
       return implode(",", $header);
     }, $request->getHeaders());
 
-    $limit = $query['limit'] ? intval($query['limit']) : 0;
-    $page = $query['page'] ? intval($query['page']) : 1;
+    $limit = isset($query['limit']) ? intval($query['limit']) : 0;
+    $page = isset($query['page']) ? intval($query['page']) : 1;
     $sort = $queryParams['sort'] ?? "ASC";
     $status = $queryParams['status'] ?? null;
 
@@ -109,8 +109,8 @@ class JobController extends RestController
       return implode(",", $header);
     }, $request->getHeaders());
 
-    $limit = $query['limit'] ? intval($query['limit']) : 0;
-    $page = $query['page'] ? intval($query['page']) : 1;
+    $limit = isset($query['limit']) ? intval($query['limit']) : 0;
+    $page = isset($query['page']) ? intval($query['page']) : 1;
     $sort = $queryParams['sort'] ?? "ASC";
     $status = $queryParams['status'] ?? null;
 
