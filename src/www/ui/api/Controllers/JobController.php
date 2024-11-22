@@ -96,7 +96,8 @@ class JobController extends RestController
     $apiVersion = ApiVersion::getVersion($request);
     $userId = $this->restHelper->getUserId();
 
-    $query = $apiVersion == ApiVersion::V2 ? $request->getQueryParams() : $request->getHeaders();
+    $queryParams = $request->getQueryParams();
+    $query = $apiVersion == ApiVersion::V2 ? $queryParams : $request->getHeaders();
     $limit = $query['limit'] ?? 0;
     $page = $query['page'] ?? 1;
     $sort = $query['sort'] ?? "ASC";
@@ -115,12 +116,12 @@ class JobController extends RestController
       return $this->getAllResults($id, $status, $request, $response, $sort, $limit, $page, $apiVersion);
     }
 
-    if (array_key_exists(self::UPLOAD_PARAM, $query)) {
+    if (array_key_exists(self::UPLOAD_PARAM, $queryParams)) {
       /* If the upload is passed, filter accordingly */
-      return $this->getFilteredResults(intval($query[self::UPLOAD_PARAM]),
+      return $this->getFilteredResults(intval($queryParams[self::UPLOAD_PARAM]),
         $status, $request, $response, $sort, $limit, $page, $apiVersion);
     }
-    
+
     /* Otherwise return all jobs for the current user */
     return $this->getAllUserResults($userId, $status, $request, $response, $sort, $limit, $page, $apiVersion);
   }

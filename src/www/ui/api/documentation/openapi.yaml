@@ -3229,7 +3229,7 @@ paths:
               - Queued
               - Completed
               - Failed
-          in: query
+          in: header
         - name: limit
           required: false
           schema:
@@ -3249,7 +3249,7 @@ paths:
             enum:
               - asc
               - desc
-          in: query
+          in: header
         - name: upload
           required: false
           schema:
@@ -3325,7 +3325,7 @@ paths:
               - Queued
               - Completed
               - Failed
-          in: query
+          in: header
         - name: limit
           required: false
           schema:
@@ -3345,7 +3345,7 @@ paths:
             enum:
               - asc
               - desc
-          in: query
+          in: header
       responses:
         '200':
           description: OK

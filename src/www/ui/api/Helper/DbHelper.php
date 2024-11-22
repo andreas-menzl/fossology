@@ -288,12 +288,13 @@ FROM $tableName WHERE $idRowName = $1", [$id],
 
 
   /**
-   * Generates the SQL statement for the Common Table Expression (CTE) 
+   * Generates the SQL statement for the Common Table Expression (CTE)
    * that retrieves the jobs including their status received by the jobqueue table.
    *
    * @return string The SQL statement for the job status CTE.
    */
-  private function getJobStatusCteSQLStatement(){
+  private function getJobStatusCteSQLStatement()
+  {
     return "WITH job_with_status_cte AS (
       SELECT j.job_pk, j.job_queued, j.job_name, j.job_upload_fk, j.job_user_fk, j.job_group_fk,
         CASE
@@ -348,11 +349,11 @@ FROM $tableName WHERE $idRowName = $1", [$id],
     }
 
     // if userId was given, add it to the where filter
-    if($uid !== null) {
+    if ($uid !== null) {
       $params[] = $uid;
       $filter[] = "job_user_fk = $" . count($params);
     }
-    
+
     // if status was given, add it to the where filter
     if ($status !== null) {
       $params[] = $status;
