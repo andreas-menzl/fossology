@@ -208,8 +208,8 @@ class JobControllerTest extends \PHPUnit\Framework\TestCase
       ->withArgs([M::anyOf(44, 45)])->andReturn(["jq_endtext"=>'Completed']);
 
     $requestHeaders = new Headers();
-    $requestHeaders->setHeader('limit', 1);
-    $requestHeaders->setHeader('page', 2);
+    $requestHeaders->setHeader('limit', '1');
+    $requestHeaders->setHeader('page', '2');
     $body = $this->streamFactory->createStream();
     $request = new Request("GET", new Uri("HTTP", "localhost"),
       $requestHeaders, [], [], $body);

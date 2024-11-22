@@ -3219,17 +3219,6 @@ paths:
       summary: Gets all jobs created by the logged in user
       description: Returns all jobs with their status created by the logged in user
       parameters:
-        - name: status
-          description: Returns only jobs with the selected status.
-          required: false
-          schema:
-            type: string
-            enum:
-              - Processing
-              - Queued
-              - Completed
-              - Failed
-          in: header
         - name: limit
           required: false
           schema:
@@ -3249,7 +3238,18 @@ paths:
             enum:
               - asc
               - desc
-          in: header
+          in: query
+        - name: status
+          description: Returns only jobs with the selected status.
+          required: false
+          schema:
+            type: string
+            enum:
+              - Processing
+              - Queued
+              - Completed
+              - Failed
+          in: query
         - name: upload
           required: false
           schema:
@@ -3315,17 +3315,6 @@ paths:
       summary: Gets all jobs created by all users
       description: Returns all jobs with their status created by every user. This API returns a response only if the requesting user is an Admin.
       parameters:
-        - name: status
-          description: Returns only jobs with the selected status.
-          required: false
-          schema:
-            type: string
-            enum:
-              - Processing
-              - Queued
-              - Completed
-              - Failed
-          in: header
         - name: limit
           required: false
           schema:
@@ -3338,6 +3327,17 @@ paths:
             type: integer
             minimum: 1
           in: header
+        - name: status
+          description: Returns only jobs with the selected status.
+          required: false
+          schema:
+            type: string
+            enum:
+              - Processing
+              - Queued
+              - Completed
+              - Failed
+          in: query
         - name: sort
           required: false
           schema:
@@ -3345,7 +3345,7 @@ paths:
             enum:
               - asc
               - desc
-          in: header
+          in: query
       responses:
         '200':
           description: OK

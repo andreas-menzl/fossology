@@ -70,11 +70,19 @@ class JobController extends RestController
     $apiVersion = ApiVersion::getVersion($request);
     $this->throwNotAdminException();
 
-    $query = $apiVersion == ApiVersion::V2 ? $request->getQueryParams() : $request->getHeaders();
-    $limit = $query['limit'] ?? 0;
-    $page = $query['page'] ?? 1;
-    $sort = $query['sort'] ?? "ASC";
-    $status = $query['status'] ?? null;
+    $queryParams = $request->getQueryParams();
+    $query = $apiVersion == ApiVersion::V2 ? $queryParams : array_map(function($header) {
+      return implode(",", $header);
+    }, $request->getHeaders());
+
+    $limit = $query['limit'] ? intval($query['limit']) : 0;
+    $page = $query['page'] ? intval($query['page']) : 1;
+    $sort = $queryParams['sort'] ?? "ASC";
+    $status = $queryParams['status'] ?? null;
+
+    if ($limit < 0 || $page < 1) {
+      throw new HttpBadRequestException("Limit and page cannot be smaller than 1 and has to be numeric!");
+    }
 
     $limit = is_numeric($limit) && $limit >= 0 ? $limit : 0;
     $page = is_numeric($page) && $page >= 1 ? $page : 1;
@@ -97,14 +105,18 @@ class JobController extends RestController
     $userId = $this->restHelper->getUserId();
 
     $queryParams = $request->getQueryParams();
-    $query = $apiVersion == ApiVersion::V2 ? $queryParams : $request->getHeaders();
-    $limit = $query['limit'] ?? 0;
-    $page = $query['page'] ?? 1;
-    $sort = $query['sort'] ?? "ASC";
-    $status = $query['status'] ?? null;
+    $query = $apiVersion == ApiVersion::V2 ? $queryParams : array_map(function($header) {
+      return implode(",", $header);
+    }, $request->getHeaders());
 
-    $limit = is_numeric($limit) && $limit >= 0 ? $limit : 0;
-    $page = is_numeric($page) && $page >= 1 ? $page : 1;
+    $limit = $query['limit'] ? intval($query['limit']) : 0;
+    $page = $query['page'] ? intval($query['page']) : 1;
+    $sort = $queryParams['sort'] ?? "ASC";
+    $status = $queryParams['status'] ?? null;
+
+    if ($limit < 0 || $page < 1) {
+      throw new HttpBadRequestException("Limit and page cannot be smaller than 1 and has to be numeric!");
+    }
 
     $id = isset($args['id']) ? intval($args['id']) : null;
     if ($id !== null && !$this->dbHelper->doesIdExist("job", "job_pk", $id)) {
