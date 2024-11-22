@@ -208,8 +208,8 @@ class JobControllerTest extends \PHPUnit\Framework\TestCase
       ->withArgs([M::anyOf(44, 45)])->andReturn(["jq_endtext"=>'Completed']);
 
     $requestHeaders = new Headers();
-    $requestHeaders->setHeader('limit', '1');
-    $requestHeaders->setHeader('page', '2');
+    $requestHeaders->setHeader('limit', 1);
+    $requestHeaders->setHeader('page', 2);
     $body = $this->streamFactory->createStream();
     $request = new Request("GET", new Uri("HTTP", "localhost"),
       $requestHeaders, [], [], $body);
@@ -307,7 +307,7 @@ class JobControllerTest extends \PHPUnit\Framework\TestCase
       ->withArgs(["upload", "upload_pk", 5])->andReturn(true);
     $this->dbHelper->shouldReceive('doesIdExist')
       ->withArgs(['job', 'job_pk', 12])->andReturn(true);
-    $this->dbHelper->shouldReceive('getJobs')->withArgs(array(null, null, "ASC", 0, 1, 5, null))
+    $this->dbHelper->shouldReceive('getJobs')->withArgs(array(null, null, "ASC", 0, 1, 5))
       ->andReturn([[$job], 1]);
     $this->jobDao->shouldReceive('getChlidJobStatus')->withArgs(array(12))
       ->andReturn(['45' => 0]);
