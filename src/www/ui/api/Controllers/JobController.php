@@ -84,9 +84,6 @@ class JobController extends RestController
       throw new HttpBadRequestException("Limit and page cannot be smaller than 1 and has to be numeric!");
     }
 
-    $limit = is_numeric($limit) && $limit >= 0 ? $limit : 0;
-    $page = is_numeric($page) && $page >= 1 ? $page : 1;
-
     return $this->getAllResults(null, $status, $request, $response, $sort, $limit, $page, $apiVersion);
   }
 
