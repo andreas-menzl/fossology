@@ -235,7 +235,7 @@ class JobController extends RestController
   /**
    * Get all jobs created by the current user.
    *
-   * @param integer $uid Specific user id
+   * @param integer $userId Specific user id
    * @param string|null $status Status of the jobs to return
    * @param Request $request Request object
    * @param ResponseHelper $response Response object
@@ -245,9 +245,9 @@ class JobController extends RestController
    * @param integer $apiVersion API version
    * @return ResponseHelper
    */
-  private function getAllUserResults($uid, $status, $request, $response, $sort, $limit, $page, $apiVersion)
+  private function getAllUserResults($userId, $status, $request, $response, $sort, $limit, $page, $apiVersion)
   {
-    list($jobs, $count) = $this->dbHelper->getUserJobs( $uid, $status, $sort, $limit, $page);
+    list($jobs, $count) = $this->dbHelper->getUserJobs($userId, $status, $sort, $limit, $page);
     $finalJobs = [];
     foreach ($jobs as $job) {
       $this->updateEta($job);

@@ -321,10 +321,11 @@ FROM $tableName WHERE $idRowName = $1", [$id],
    * @param integer $limit    Set to limit the result length
    * @param integer $page     Page number required
    * @param integer $uploadId Upload ID to be filtered
+   * @param integer $userId      Set to get information of only given user's ID
    * @return array[] List of jobs at first index and total number of pages at
    *         second.
    */
-  public function getJobs($id = null, $status = null, $sort = "ASC", $limit = 0, $page = 1, $uploadId = null, $uid = null)
+  public function getJobs($id = null, $status = null, $sort = "ASC", $limit = 0, $page = 1, $uploadId = null, $userId = null)
   {
     $jobsWithStatusCteSQL = $this->getJobStatusCteSQLStatement();
     $jobSQL = "$jobsWithStatusCteSQL SELECT * FROM job_with_status_cte";
@@ -333,7 +334,7 @@ FROM $tableName WHERE $idRowName = $1", [$id],
     $pagination = "";
     $params = [];
     $filter = [];
-    $statement = $uid !== null ? __METHOD__ . ".getUserJobs" : __METHOD__ . ".getJobs";
+    $statement = $userId !== null ? __METHOD__ . ".getUserJobs" : __METHOD__ . ".getJobs";
     $countStatement = __METHOD__ . ".getJobCount";
 
     if ($id !== null) {
@@ -349,8 +350,8 @@ FROM $tableName WHERE $idRowName = $1", [$id],
     }
 
     // if userId was given, add it to the where filter
-    if ($uid !== null) {
-      $params[] = $uid;
+    if ($userId !== null) {
+      $params[] = $userId;
       $filter[] = "job_user_fk = $" . count($params);
     }
 
@@ -405,7 +406,7 @@ FROM $tableName WHERE $idRowName = $1", [$id],
    *
    * If a limit is passed, the results are trimmed.
    *
-   * @param integer $uid      Set to get information of only given user's ID
+   * @param integer $userId      Set to get information of only given user's ID
    * @param integer $status   Set to get information of only jobs with given status
    * @param string  $sort     Set to sort the results asc or desc
    * @param integer $limit    Set to limit the result length
@@ -413,9 +414,9 @@ FROM $tableName WHERE $idRowName = $1", [$id],
    * @return array[] List of jobs at first index and total number of pages at
    *         second.
    */
-  public function getUserJobs($uid = null, $status = null, $sort = "ASC", $limit = 0, $page = 1)
+  public function getUserJobs($userId = null, $status = null, $sort = "ASC", $limit = 0, $page = 1)
   {
-    return $this->getJobs(null, $status, $sort, $limit, $page, null, $uid);
+    return $this->getJobs(null, $status, $sort, $limit, $page, null, $userId);
   }
 
   /**
