@@ -45,7 +45,7 @@ class ShowJobsDao
     $jobArray = array();
 
     // only use the uploads the user / group has access to
-    foreach($upload_pks as $key => $upload_pk){
+    foreach ($upload_pks as $key => $upload_pk) {
       $uploadIsAccessible = $this->uploadDao->isAccessible($upload_pk, Auth::getGroupId());
 
       // if upload is not accessible to current group, remove it from array
@@ -129,13 +129,13 @@ class ShowJobsDao
       }
       $jobArray[] = $row['job_pk'];
     }
-    
+
     // calculate total pages for jobs accessible to current group
     $totalPages = floor(count($jobArray) / $this->maxJobsPerPage);
 
     // get jobs for current page only
     $pageJobs = array_slice($jobArray, $offset, $this->maxJobsPerPage);
-    
+
     $this->dbManager->freeResult($result);
 
     return array($pageJobs, $totalPages);
