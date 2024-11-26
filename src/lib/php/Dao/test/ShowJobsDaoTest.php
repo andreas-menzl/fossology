@@ -78,6 +78,10 @@ class ShowJobsDaoTest extends \PHPUnit\Framework\TestCase
 
   public function testUploads2Jobs()
   {
+    $groupId = 2;
+    $GLOBALS['SysConf']['auth'][Auth::GROUP_ID] = $groupId;
+    $GLOBALS['SysConf']['auth'][Auth::USER_ID] = 1;
+
     $jobs = array(3=>2, 4=>3, 5=>5, 6=>8%6, 7=>13%6, 8=>21%6);
     foreach ($jobs as $jobId => $jobUpload) {
       $this->dbManager->insertTableRow('job', array('job_pk' => $jobId, 'job_upload_fk' => $jobUpload));
@@ -96,6 +100,10 @@ class ShowJobsDaoTest extends \PHPUnit\Framework\TestCase
 
   public function testUploads2JobsPaged()
   {
+    $groupId = 2;
+    $GLOBALS['SysConf']['auth'][Auth::GROUP_ID] = $groupId;
+    $GLOBALS['SysConf']['auth'][Auth::USER_ID] = 1;
+
     $jobs = array_combine(range(3,13),range(3,13));
     foreach ($jobs as $jobId => $jobUpload) {
       $this->dbManager->insertTableRow('job', array('job_pk' => $jobId, 'job_upload_fk' => $jobUpload));
