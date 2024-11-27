@@ -356,7 +356,7 @@ FROM $tableName WHERE $idRowName = $1", [$id],
     }
 
     // if status was given, add it to the where filter
-    if ($status !== null) {
+    if ($status !== null && in_array($status, ["Failed", "Processing", "Queued", "Completed"])) {
       $params[] = $status;
       $filter[] = "job_status = $" . count($params);
     }
